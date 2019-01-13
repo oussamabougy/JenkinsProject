@@ -21,6 +21,13 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+pitest {
+    targetClasses = ['com.example.*']
+}
+
+task myJavadocs(type: Javadoc) {
+    source = sourceSets.main.allJava
+}
 
 jacoco {
     toolVersion = "0.8.2"
@@ -56,6 +63,32 @@ jacocoTestCoverageVerification {
     }
 }
 
+project.tasks["pitest"].dependsOn "test"
+project.tasks["jacocoTestReport"].dependsOn "test"
+project.tasks["jacocoTestCoverageVerification"].dependsOn "test"
+
+
+task generateMatrixAPI (type:Copy) {
+    from('build/reports/tests') {
+        into 'TestReports'
+    }
+    from('build/reports/pitest') {
+        into 'TestQualityReports'
+    }
+    from('build/jacocoHtml') {
+        into 'TestQualityReports'
+    }
+    from('build/docs') {
+        into 'Documentation'
+    }
+    from('build/libs') {
+        into 'API'
+    }
+    into "D:\\gradle\\MatrixRelease\\Matrix_v_$version"
+}
+
+project.tasks["generateMatrixAPI"].dependsOn "build"
+
 uploadArchives {
     repositories {
         maven {
@@ -66,4 +99,12 @@ uploadArchives {
             url "https://mymavenrepo.com/repo/QONlMTJzJygT5MfkhM50/"
         }
     }
+}
+
+project.tasks["uploadArchives"].dependsOn "generateMatrixAPI"
+
+slack {
+    webhookUrl "https://hooks.slack.com/services/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"
+    username "Gradle"
+    shouldMonitor "uploadArchives"
 }
