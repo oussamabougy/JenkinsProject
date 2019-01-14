@@ -8,5 +8,15 @@ pipeline {
         bat 'gradle uploadArchives'
       }
     }
+    stage('Mail Notification') {
+      steps {
+        bat 'echo \'hi\''
+      }
+    }
+    stage('Code Analysis') {
+      steps {
+        waitForQualityGate true
+      }
+    }
   }
 }
