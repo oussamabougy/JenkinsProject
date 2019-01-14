@@ -5,8 +5,8 @@ pipeline {
       steps {
         bat 'gradle build'
         bat 'gradle javadoc'
-        bat 'echo \'he\''
         archiveArtifacts 'build/libs/*jar'
+        archiveArtifacts 'build/docs'
       }
       post {
         success {
@@ -34,7 +34,7 @@ pipeline {
             }
 
             timeout(time: 10, unit: 'MINUTES') {
-              waitForQualityGate true
+              waitForQualityGate abortPipeline:true
             }
 
           }
@@ -47,11 +47,17 @@ pipeline {
       }
     }
     stage('Deployment') {
+      when {
+        branch 'master'
+      }
       steps {
         bat 'gradle uploadArchives'
       }
     }
     stage('Slack Notification') {
+      when {
+        branch 'master'
+      }
       steps {
         slackSend(baseUrl: 'https://gradlesil.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', message: 'Build successful')
       }
