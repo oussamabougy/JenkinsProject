@@ -6,7 +6,7 @@ pipeline {
         bat 'gradle build'
         bat 'gradle javadoc'
         archiveArtifacts 'build/libs/*jar'
-        archiveArtifacts 'build/docs'
+        archiveArtifacts 'build/docs/javadoc/*html'
       }
       post {
         success {
