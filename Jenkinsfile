@@ -6,6 +6,7 @@ pipeline {
         bat 'gradle build'
         bat 'gradle javadoc'
         bat 'echo \'he\''
+        archiveArtifacts 'build/libs/*jar'
       }
     }
     stage('Mail Notification') {
