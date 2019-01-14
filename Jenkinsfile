@@ -8,13 +8,13 @@ pipeline {
         bat 'echo \'he\''
         archiveArtifacts 'build/libs/*jar'
       }
-    }
-   post {
-      success {
-          mail(subject: 'Success', body: "Successful build", from: 'jenkins-notification@jenkins.com', to: 'sissouma12@gmail.com')
-      }
-      failure {
-          mail(subject: "Failed", body: "Failed build", from: 'jenkins-notification@jenkins.com', to: 'sissouma12@gmail.com')
+      post {
+        success {
+            mail(subject: 'Success', body: "Successful build", from: 'jenkins-notification@jenkins.com', to: 'sissouma12@gmail.com')
+        }
+        failure {
+            mail(subject: "Failed", body: "Failed build", from: 'jenkins-notification@jenkins.com', to: 'sissouma12@gmail.com')
+        }
       }
     }
     stage('Mail Notification') {
