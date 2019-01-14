@@ -17,21 +17,22 @@ pipeline {
     stage('Code Analysis') {
       parallel {
         stage('Sonarqube') {
-		    environment {
-		        scannerHome = tool 'SonarQubeScanner'
-		    }
-		    steps {
-		        withSonarQubeEnv('sonarqube') {
-		            bat "${scannerHome}/sonar-scanner"
-		        }
-		        timeout(time: 10, unit: 'MINUTES') {
-		            waitForQualityGate abortPipeline: true
-		        }
-		    }
-		}
+          environment {
+            scannerHome = 'SonarQubeScanner'
+          }
+          steps {
+            withSonarQubeEnv('sonarqube') {
+              bat "${scannerHome}/sonar-scanner"
+            }
+
+            timeout(time: 10, unit: 'MINUTES') {
+              waitForQualityGate true
+            }
+
+          }
+        }
         stage('Test Reporting') {
           steps {
-            bat 'echo \'test\''
             jacoco()
           }
         }
@@ -44,8 +45,7 @@ pipeline {
     }
     stage('Slack Notification') {
       steps {
-        bat 'echo \'hi\''
-        slackSend()
+        slackSend(baseUrl: 'https://gradlesil.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins')
       }
     }
   }
