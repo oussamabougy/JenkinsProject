@@ -23,6 +23,7 @@ pipeline {
         stage('Test Reporting') {
           steps {
             bat 'echo \'test\''
+            jacoco()
           }
         }
       }
