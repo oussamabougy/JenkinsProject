@@ -5,7 +5,7 @@ pipeline {
       steps {
         bat 'gradle build'
         bat 'gradle javadoc'
-        bat 'gradle uploadArchives'
+        bat 'echo \'he\''
       }
     }
     stage('Mail Notification') {
@@ -14,8 +14,27 @@ pipeline {
       }
     }
     stage('Code Analysis') {
+      parallel {
+        stage('Code Analysis') {
+          steps {
+            withSonarQubeEnv 'sonarqube'
+          }
+        }
+        stage('Test Reporting') {
+          steps {
+            bat 'echo \'test\''
+          }
+        }
+      }
+    }
+    stage('Deployment') {
       steps {
-        waitForQualityGate true
+        bat 'gradle uploadArchives'
+      }
+    }
+    stage('Slack Notification') {
+      steps {
+        bat 'echo \'hi\''
       }
     }
   }
