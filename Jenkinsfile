@@ -18,7 +18,7 @@ pipeline {
       parallel {
         stage('Code Analysis') {
           steps {
-            withSonarQubeEnv 'sonarqube'
+            bat 'echo \'h\''
           }
         }
         stage('Test Reporting') {
@@ -37,6 +37,7 @@ pipeline {
     stage('Slack Notification') {
       steps {
         bat 'echo \'hi\''
+        slackSend()
       }
     }
   }
