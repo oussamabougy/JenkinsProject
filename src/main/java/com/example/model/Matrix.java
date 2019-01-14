@@ -5,6 +5,7 @@ public class Matrix {
 	private int nrows;
 	private int ncols;
 	private double[][] data;
+	//a comment
 
 	public Matrix(double[][] dat) {
 		this.data = dat;
