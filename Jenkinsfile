@@ -45,7 +45,7 @@ pipeline {
     }
     stage('Slack Notification') {
       steps {
-        slackSend(baseUrl: 'https://gradlesil.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins')
+        slackSend(baseUrl: 'https://gradlesil.slack.com/services/hooks/jenkins-ci/', channel: '#jenkins', message: 'Build successful')
       }
     }
   }
