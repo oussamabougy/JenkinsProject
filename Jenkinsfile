@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Test Reporting') {
           steps {
-            jacoco()
+            bat 'gradle jacocoTestReport'
           }
         }
       }
